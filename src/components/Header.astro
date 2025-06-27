@@ -16,7 +16,7 @@ const toggleLangLabel = headerTranslations[lang][headerTranslations[lang].length
       {links.map(link => (
         <a
           class="text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition"
-          href={link.href + '/' + lang}
+         href={`${link.href.replace(/\/$/, '')}/${lang}`}
         >
           {link.label}
         </a>
@@ -63,7 +63,7 @@ const toggleLangLabel = headerTranslations[lang][headerTranslations[lang].length
       {links.map(link => (
         <a
           class="block text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition"
-          href={link.href + '/' + lang}
+          href={`${link.href.replace(/\/$/, '')}/${lang}`}
         >
           {link.label}
         </a>
