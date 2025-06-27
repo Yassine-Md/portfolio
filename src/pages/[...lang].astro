@@ -1,0 +1,38 @@
+---
+import Layout from '../components/Layout.astro';
+import { translations } from '../index_i18n.ts';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'fr' } },
+    { params: { lang: 'en' } },
+    { params: { lang: undefined } }, // pour la racine /
+  ];
+}
+
+// Récupération dynamique de la langue depuis l'URL
+const langParam = Astro.params.lang; // 'en', 'fr', etc.
+const lang = ['fr', 'en'].includes(langParam) ? langParam : 'fr';
+const t = translations[lang];
+---
+
+<Layout lang={lang} t={t}>
+  <section class="text-center">
+    <h1 class="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">{t.welcomeTitle}</h1>
+    <p class="mb-8 text-lg">{t.welcomeDesc}</p>
+  </section>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+    {t.categories.map((cat) => (
+      <a href={`/blog/${cat.slug}`} class={`bg-indigo-50 dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition`}>
+        <h2 class={`text-xl font-semibold mb-2 ${cat.slug === "reseau" ? "text-indigo-700 dark:text-indigo-300" : 
+            cat.slug === "web" ? "text-pink-700 dark:text-pink-300" : 
+            cat.slug === "systeme" ? "text-green-700 dark:text-green-300" : 
+            "text-yellow-700 dark:text-yellow-300"}`}>
+          {cat.emoji} {cat.title}
+        </h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400">{cat.description}</p>
+      </a>
+    ))}
+  </div>
+</Layout>

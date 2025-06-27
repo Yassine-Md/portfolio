@@ -1,0 +1,113 @@
+---
+// Header.astro
+import { headerTranslations } from '../header_i18n.ts';
+
+const { lang = 'fr' } = Astro.props;
+const links = headerTranslations[lang].slice(0, -1);
+const toggleLangLabel = headerTranslations[lang][headerTranslations[lang].length - 1].toggleLangLabel;
+---
+
+<header class="p-4 bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
+  <div class="max-w-5xl mx-auto flex justify-between items-center">
+    <h1 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">PingToLearn</h1>
+
+    <!-- Desktop navigation -->
+    <nav class="hidden md:flex space-x-6 items-center">
+      {links.map(link => (
+        <a
+          class="text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition"
+          href={link.href + '/' + lang}
+        >
+          {link.label}
+        </a>
+      ))}
+      <button
+        class="px-3 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
+        id="lang-toggle"
+        type="button"
+      >
+        {toggleLangLabel}
+      </button>
+    </nav>
+
+    <!-- Mobile buttons -->
+    <div class="md:hidden flex items-center space-x-4">
+      <button
+        class="px-3 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
+        id="lang-toggle-mobile"
+        type="button"
+      >
+        {toggleLangLabel}
+      </button>
+      <button id="menu-toggle" class="text-gray-700 dark:text-gray-300 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sidebar mobile -->
+  <div
+    id="mobile-menu"
+    class="fixed top-0 left-0 w-64 h-full bg-white dark:bg-gray-900 shadow-lg transform -translate-x-full transition-transform duration-300 z-50"
+  >
+    <div class="p-4 flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
+      <span class="text-xl font-bold text-indigo-600 dark:text-indigo-400">Menu</span>
+      <button id="close-menu" class="text-gray-700 dark:text-gray-300">
+        ✕
+      </button>
+    </div>
+    <nav class="p-4 space-y-4">
+      {links.map(link => (
+        <a
+          class="block text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition"
+          href={link.href + '/' + lang}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<!-- Scripts -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const langToggles = [document.getElementById('lang-toggle'), document.getElementById('lang-toggle-mobile')];
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenu = document.getElementById('close-menu');
+
+    langToggles.forEach(btn => {
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const url = new URL(window.location.href);
+          if (url.pathname.endsWith('/fr')) {
+	    url.pathname = url.pathname.replace(/\/fr$/, '/en');
+	  } else if (url.pathname.endsWith('/en')) {
+	    url.pathname = url.pathname.replace(/\/en$/, '/fr');
+	  } else {
+	    // Supprime slash final éventuel et ajoute /en
+	    url.pathname = url.pathname.replace(/\/$/, '') + '/en';
+	  }
+          window.location.href = url.toString();
+        });
+      }
+    });
+
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('-translate-x-full');
+      });
+    }
+
+    if (closeMenu && mobileMenu) {
+      closeMenu.addEventListener('click', () => {
+        mobileMenu.classList.add('-translate-x-full');
+      });
+    }
+  });
+</script>
+
