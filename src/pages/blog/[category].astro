@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../components/Layout.astro';
+
+export async function getStaticPaths() {
+  const categories = ['reseau', 'web', 'systeme', 'logiciel'];
+  return categories.map((category) => ({ params: { category } }));
+}
+
+const { category } = Astro.params;
+const articles = (await getCollection(category))
+  .sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate));
+---
+
+<Layout>
+  <h1 class="text-3xl font-bold capitalize mb-8">{category}</h1>
+  
+  <div class="grid gap-6">
+    {articles.map((article) => (
+      <a href={`/blog/${category}/${article.slug}`} class="block p-6 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+        <h2 class="text-xl font-semibold">{article.data.title}</h2>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">{article.data.description}</p>
+        <time class="text-sm text-gray-500">{new Date(article.data.pubDate).toLocaleDateString()}</time>
+      </a>
+    ))}
+  </div>
+</Layout>
