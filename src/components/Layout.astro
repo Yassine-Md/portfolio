@@ -1,0 +1,25 @@
+---
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { footerTranslations } from '../footer_i18n.ts';
+
+// Récupération dynamique de la langue depuis les props (passée depuis chaque page)
+const { lang = 'fr' } = Astro.props;
+const tFooter = footerTranslations[lang] || footerTranslations['fr'];
+---
+
+<html lang={lang} class="dark h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PingToLearn</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  </head>
+  <body class="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans">
+    <Header lang={lang} />
+    <main class="flex-grow max-w-5xl mx-auto p-6 w-full">
+      <slot />
+    </main>
+    <Footer t={tFooter} />
+  </body>
+</html>

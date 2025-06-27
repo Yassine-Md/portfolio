@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../components/Layout.astro';
+
+export async function getStaticPaths() {
+  const categories = ['reseau', 'web', 'systeme', 'logiciel'];
+  const paths = [];
+
+  for (const category of categories) {
+    const articles = await getCollection(category);
+    paths.push(...articles.map(article => ({
+      params: { category, slug: article.slug },
+      props: { article },
+    })));
+  }
+
+  return paths;
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render(); // Extraction du composant Content
+---
+
+<Layout>
+  <article class="prose dark:prose-invert mx-auto max-w-4xl">
+    <h1 class="text-3xl font-bold mb-2">{article.data.title}</h1>
+    <time class="text-gray-500 block mb-8">{new Date(article.data.pubDate).toLocaleDateString()}</time>
+    
+    <div class="content">
+      <Content />  <!-- Utilisation correcte du composant -->
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .content a {
+    color: #3b82f6;
+    text-decoration: underline;
+  }
+  .content img {
+    margin: 1rem auto;
+    border-radius: 0.5rem;
+  }
+</style>
