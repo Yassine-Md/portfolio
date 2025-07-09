@@ -4,7 +4,7 @@ const { lang = 'fr' } = Astro.props;
 const t = portfolioTranslations[lang] || portfolioTranslations.fr;
 ---
 
-<div class="text-center mb-16">
+<div class="text-center mb-16 bg-white dark:bg-gray-900 p-6 rounded-xl">
   <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
     {t.title}
   </h2>
@@ -14,29 +14,29 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
 </div>
 
 <!-- Expériences Techniques -->
-<div class="mb-20">
+<div class="mb-20 bg-white dark:bg-gray-900 p-6 rounded-xl">
   <h3 class="text-3xl font-bold mb-12 text-center text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-    <span class="mr-3"></span>
+    <span class="mr-3">💼</span>
     {t.experiencesTitle}
   </h3>
   
   <div class="relative">
-    <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 hidden lg:block"></div>
+    <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 opacity-60 hidden lg:block"></div>
     
     <div class="space-y-12">
       {t.experiences.map((exp, index) => (
-        <div class={`flex flex-col lg:flex-row items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
+        <div class={`flex flex-col lg:flex-row items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`} key={exp.title}>
           <div class="relative z-10 flex-shrink-0 w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg ring-4 ring-white dark:ring-gray-800 hidden lg:flex">
             {exp.icon}
           </div>
           
           <div class={`w-full lg:w-5/12 ${index % 2 === 0 ? 'lg:mr-8' : 'lg:ml-8'}`}>
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border border-gray-200 dark:border-gray-700">
               <div class="flex items-start justify-between mb-4">
                 <div class="flex items-center lg:hidden">
                   <span class="text-2xl mr-3">{exp.icon}</span>
                 </div>
-                <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900 px-3 py-1 rounded-full">
+                <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/50 px-3 py-1 rounded-full">
                   {exp.period}
                 </span>
               </div>
@@ -57,7 +57,7 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
               
               <div class="flex flex-wrap gap-2">
                 {exp.technologies.map((tech) => (
-                  <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-indigo-100 dark:hover:bg-indigo-800 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200">
+                  <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-indigo-100 dark:hover:bg-indigo-800/50 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200">
                     {tech}
                   </span>
                 ))}
@@ -71,7 +71,7 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
 </div>
 
 <!-- Projets Techniques -->
-<div class="mb-16">
+<div class="mb-16 bg-white dark:bg-gray-900 p-6 rounded-xl">
   <h3 class="text-3xl font-bold mb-12 text-center text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
     <span class="mr-3"></span>
     {t.projectsTitle}
@@ -79,11 +79,11 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
   
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
     {t.projects.map((project) => (
-      <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group border border-gray-200 dark:border-gray-700" key={project.title}>
         <div class="text-4xl mb-4 text-center">{project.icon}</div>
         
         <div class="text-center mb-4">
-          <span class="inline-block bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full text-sm font-medium">
+          <span class="inline-block bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full text-sm font-medium">
             {project.year}
           </span>
         </div>
@@ -98,7 +98,7 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
         
         <div class="flex flex-wrap justify-center gap-2 mt-4">
           {project.technologies.map((tech) => (
-            <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium">
+            <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium hover:bg-indigo-100 dark:hover:bg-indigo-800/50">
               {tech}
             </span>
           ))}
@@ -109,16 +109,16 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
 </div>
 
 <!-- Certifications et Réalisations -->
-<div class="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8">
+<div class="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
   <h3 class="text-2xl font-bold mb-8 text-center text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-    <span class="mr-3"></span>
+    <span class="mr-3">🏆</span>
     {t.certificationsTitle}
   </h3>
   
   <div class="grid md:grid-cols-3 gap-6">
     {t.certifications.map((cert) => (
-      <div class="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-md hover:shadow-lg transition-shadow duration-300">
-        <div class="text-2xl mb-3"></div>
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700" key={cert.name}>
+        <div class="text-2xl mb-3">📜</div>
         <h4 class="font-bold text-gray-900 dark:text-white mb-2">{cert.name}</h4>
         <p class="text-indigo-600 dark:text-indigo-400 font-medium mb-1">{cert.level}</p>
         <p class="text-gray-600 dark:text-gray-300 text-sm">{cert.year}</p>
