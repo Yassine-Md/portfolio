@@ -7,38 +7,210 @@ export async function getStaticPaths() {
   const paths = [];
 
   for (const category of categories) {
-    const articles = await getCollection(category);
-    paths.push(...articles.map(article => ({
-      params: { category, slug: article.slug },
-      props: { article },
-    })));
+    try {
+      const posts = await getCollection(category);
+      posts.forEach(post => {
+        paths.push({
+          params: { 
+            category,
+            slug: post.slug
+          },
+          props: { post }
+        });
+      });
+    } catch (error) {
+      console.error(`Error loading ${category}:`, error);
+    }
   }
 
   return paths;
 }
 
-const { article } = Astro.props;
-const { Content } = await article.render(); // Extraction du composant Content
+const { post } = Astro.props;
+const { Content } = await post.render();
 ---
 
 <Layout>
-  <article class="prose dark:prose-invert mx-auto max-w-4xl">
-    <h1 class="text-3xl font-bold mb-2">{article.data.title}</h1>
-    <time class="text-gray-500 block mb-8">{new Date(article.data.pubDate).toLocaleDateString()}</time>
-    
-    <div class="content">
-      <Content />  <!-- Utilisation correcte du composant -->
+  <article class="max-w-4xl mx-auto px-4 py-8">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
+      <time class="text-gray-500">{new Date(post.data.pubDate).toLocaleDateString('fr-FR')}</time>
+    </header>
+
+    <div class="markdown-render" id="markdown-content">
+      <Content />
     </div>
   </article>
 </Layout>
 
-<style>
-  .content a {
+<script is:inline>
+document.addEventListener('DOMContentLoaded', () => {
+  const content = document.getElementById('markdown-content');
+  const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  
+  headings.forEach(heading => {
+    // Création du bouton toggle
+    const toggle = document.createElement('button');
+    toggle.innerHTML = '▼';
+    toggle.className = 'fold-toggle';
+    
+    // Style du bouton
+    toggle.style.cssText = `
+      margin-left: 8px;
+      font-size: 0.8em;
+      color: #6b7280;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    `;
+    
+    heading.appendChild(toggle);
+    
+    // Trouver le contenu de la section
+    const sectionContent = [];
+    let nextElem = heading.nextElementSibling;
+    
+    while(nextElem && !nextElem.matches('h1, h2, h3, h4, h5, h6')) {
+      sectionContent.push(nextElem);
+      nextElem = nextElem.nextElementSibling;
+    }
+    
+    // Gestion du clic
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isCollapsed = toggle.style.transform === 'rotate(-90deg)';
+      
+      if (isCollapsed) {
+        toggle.style.transform = 'rotate(0deg)';
+        toggle.innerHTML = '▼';
+        sectionContent.forEach(el => el.style.display = '');
+      } else {
+        toggle.style.transform = 'rotate(-90deg)';
+        toggle.innerHTML = '▶';
+        sectionContent.forEach(el => el.style.display = 'none');
+      }
+    });
+    
+    // Permettre de cliquer sur tout le titre
+    heading.style.cursor = 'pointer';
+    heading.addEventListener('click', () => toggle.click());
+  });
+});
+</script>
+
+<style is:global>
+  /* Reset Markdown */
+  .markdown-render {
+    all: initial;
+    display: block;
+    color: inherit;
+    font-family: inherit;
+    line-height: 1.6;
+  }
+
+  /* Titres avec alignement des chevrons */
+  .markdown-render h1,
+  .markdown-render h2,
+  .markdown-render h3,
+  .markdown-render h4,
+  .markdown-render h5,
+  .markdown-render h6 {
+    display: flex;
+    align-items: center;
+    margin: 1em 0;
+  }
+
+  .markdown-render h1 {
+    font-size: 2.2em;
+    font-weight: 800;
+    margin: 1.5em 0 0.8em;
+  }
+
+  .markdown-render h2 {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin: 1.3em 0 0.7em;
+  }
+
+  .markdown-render h3 {
+    font-size: 1.5em;
+    font-weight: 650;
+    margin: 1.1em 0 0.6em;
+  }
+
+  .markdown-render h4 {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 1em 0 0.5em;
+  }
+
+  .markdown-render h5 {
+    font-size: 1.1em;
+    font-weight: 550;
+    margin: 0.9em 0 0.4em;
+  }
+
+  .markdown-render h6 {
+    font-size: 1em;
+    font-weight: 500;
+    margin: 0.8em 0 0.3em;
+    color: #6b7280;
+  }
+
+  /* Éléments de base */
+  .markdown-render p {
+    margin: 1em 0;
+  }
+
+  .markdown-render strong {
+    font-weight: 600;
+  }
+
+  .markdown-render em {
+    font-style: italic;
+  }
+
+  /* Listes */
+  .markdown-render ul,
+  .markdown-render ol {
+    padding-left: 2em;
+    margin: 1em 0;
+  }
+
+  .markdown-render ul {
+    list-style-type: disc;
+  }
+
+  .markdown-render ol {
+    list-style-type: decimal;
+  }
+
+  /* Liens et code */
+  .markdown-render a {
     color: #3b82f6;
     text-decoration: underline;
+    font-weight: 500;
   }
-  .content img {
-    margin: 1rem auto;
-    border-radius: 0.5rem;
+
+  .markdown-render code {
+    font-family: monospace;
+    background: rgba(175, 184, 193, 0.2);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  /* Dark mode */
+  .dark .markdown-render {
+    color: inherit;
+  }
+
+  .dark .markdown-render code {
+    background: rgba(110, 118, 129, 0.4);
+  }
+
+  .dark .markdown-render h6 {
+    color: #9ca3af;
   }
 </style>

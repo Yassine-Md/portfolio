@@ -4,12 +4,31 @@ import Layout from '../../components/Layout.astro';
 
 export async function getStaticPaths() {
   const categories = ['reseau', 'web', 'systeme', 'logiciel'];
-  return categories.map((category) => ({ params: { category } }));
+  const paths = [];
+  
+  for (const category of categories) {
+    try {
+      const articles = await getCollection(category);
+      if (articles.length > 0) {
+        paths.push({ params: { category } });
+      }
+    } catch (error) {
+      console.warn(`No articles found for category: ${category}`);
+    }
+  }
+  
+  return paths;
 }
 
 const { category } = Astro.params;
-const articles = (await getCollection(category))
-  .sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate));
+
+let articles = [];
+try {
+  articles = (await getCollection(category))
+    .sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate));
+} catch (error) {
+  console.error(`Error loading articles for ${category}:`, error);
+}
 ---
 
 <Layout>
@@ -24,4 +43,8 @@ const articles = (await getCollection(category))
       </a>
     ))}
   </div>
+  
+  {articles.length === 0 && (
+    <p class="text-gray-500">Aucun article trouvé dans cette catégorie.</p>
+  )}
 </Layout>
