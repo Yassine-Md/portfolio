@@ -5,40 +5,66 @@ import { headerTranslations } from '../header_i18n.ts';
 const { lang = 'fr' } = Astro.props;
 const links = headerTranslations[lang].slice(0, -1);
 const toggleLangLabel = headerTranslations[lang][headerTranslations[lang].length - 1].toggleLangLabel;
+
+// Fonction pour générer l'URL de la langue alternative
+function getAlternativeLangUrl(currentUrl: string, currentLang: string): string {
+  const targetLang = currentLang === 'fr' ? 'en' : 'fr';
+  
+  // Nettoie l'URL actuelle
+  let cleanPath = currentUrl.replace(/\/+/g, '/').replace(/\/$/, '');
+  
+  if (cleanPath === '' || cleanPath === '/') {
+    return `/${targetLang}`;
+  }
+  
+  // Remplace la langue actuelle par la langue cible
+  if (cleanPath === `/${currentLang}`) {
+    return `/${targetLang}`;
+  } else if (cleanPath.endsWith(`/${currentLang}`)) {
+    return cleanPath.replace(`/${currentLang}`, `/${targetLang}`);
+  } else {
+    // Si pas de langue dans l'URL, on ajoute la langue cible
+    return `${cleanPath}/${targetLang}`;
+  }
+}
+
+// Récupère l'URL actuelle côté serveur
+const currentPath = Astro.url.pathname;
+const altLangUrl = getAlternativeLangUrl(currentPath, lang);
 ---
 
 <header class="p-4 bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
   <div class="max-w-5xl mx-auto flex justify-between items-center">
     <h1 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">PingToLearn</h1>
-
+    
     <!-- Desktop navigation -->
     <nav class="hidden md:flex space-x-6 items-center">
       {links.map(link => (
         <a
           class="text-gray-700 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition"
-         href={`${link.href.replace(/\/$/, '')}/${lang}`}
+          href={`${link.href.replace(/\/$/, '')}/${lang}`}
         >
           {link.label}
         </a>
       ))}
-      <button
+      <a
         class="px-3 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
+        href={altLangUrl}
         id="lang-toggle"
-        type="button"
       >
         {toggleLangLabel}
-      </button>
+      </a>
     </nav>
-
+    
     <!-- Mobile buttons -->
     <div class="md:hidden flex items-center space-x-4">
-      <button
+      <a
         class="px-3 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
+        href={altLangUrl}
         id="lang-toggle-mobile"
-        type="button"
       >
         {toggleLangLabel}
-      </button>
+      </a>
       <button id="menu-toggle" class="text-gray-700 dark:text-gray-300 focus:outline-none">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -47,7 +73,7 @@ const toggleLangLabel = headerTranslations[lang][headerTranslations[lang].length
       </button>
     </div>
   </div>
-
+  
   <!-- Sidebar mobile -->
   <div
     id="mobile-menu"
@@ -72,30 +98,12 @@ const toggleLangLabel = headerTranslations[lang][headerTranslations[lang].length
   </div>
 </header>
 
-<!-- Scripts -->
+<!-- Scripts pour le menu mobile seulement -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const langToggles = [document.getElementById('lang-toggle'), document.getElementById('lang-toggle-mobile')];
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     const closeMenu = document.getElementById('close-menu');
-
-    langToggles.forEach(btn => {
-      if (btn) {
-        btn.addEventListener('click', () => {
-          const url = new URL(window.location.href);
-          if (url.pathname.endsWith('/fr')) {
-	    url.pathname = url.pathname.replace(/\/fr$/, '/en');
-	  } else if (url.pathname.endsWith('/en')) {
-	    url.pathname = url.pathname.replace(/\/en$/, '/fr');
-	  } else {
-	    // Supprime slash final éventuel et ajoute /en
-	    url.pathname = url.pathname.replace(/\/$/, '') + '/en';
-	  }
-          window.location.href = url.toString();
-        });
-      }
-    });
 
     if (menuToggle && mobileMenu) {
       menuToggle.addEventListener('click', () => {
@@ -110,4 +118,3 @@ const toggleLangLabel = headerTranslations[lang][headerTranslations[lang].length
     }
   });
 </script>
-
