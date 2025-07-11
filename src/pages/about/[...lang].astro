@@ -118,15 +118,4 @@ function getCategoryColorClass(slug) {
       `).join('');
     });
   </script>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-    {t.categories.map((cat) => (
-      <a href={`/blog/${cat.slug}`} class="bg-indigo-50 dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition">
-        <h2 class={`text-xl font-semibold mb-2 ${getCategoryColorClass(cat.slug)}`}>
-          {cat.emoji || ''} {cat.title}
-        </h2>
-        <p class="text-sm text-gray-600 dark:text-gray-400">{cat.description}</p>
-      </a>
-    ))}
-  </div>
 </Layout>
