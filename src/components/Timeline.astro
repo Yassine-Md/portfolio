@@ -31,7 +31,8 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
           </div>
           
           <div class={`w-full lg:w-5/12 ${index % 2 === 0 ? 'lg:mr-8' : 'lg:ml-8'}`}>
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border border-gray-200 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border border-gray-200 dark:border-gray-700 cursor-pointer experience-card" 
+                 data-experience-index={index}>
               <div class="flex items-start justify-between mb-4">
                 <div class="flex items-center lg:hidden">
                   <span class="text-2xl mr-3">{exp.icon}</span>
@@ -55,12 +56,18 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
                 {exp.description}
               </p>
               
-              <div class="flex flex-wrap gap-2">
+              <div class="flex flex-wrap gap-2 mb-4">
                 {exp.technologies.map((tech) => (
                   <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-indigo-100 dark:hover:bg-indigo-800/50 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200">
                     {tech}
                   </span>
                 ))}
+              </div>
+              
+              <div class="text-center">
+                <span class="text-indigo-600 dark:text-indigo-400 text-sm font-medium">
+                  Cliquez pour plus de détails →
+                </span>
               </div>
             </div>
           </div>
@@ -70,10 +77,46 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
   </div>
 </div>
 
+<!-- Modal pour les détails de l'expérience -->
+<div id="experienceModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      <h3 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white"></h3>
+      <button id="closeModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl">
+        ×
+      </button>
+    </div>
+    
+    <div class="p-6">
+      <div class="flex items-center justify-between mb-6">
+        <span id="modalIcon" class="text-4xl"></span>
+        <span id="modalPeriod" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/50 px-3 py-1 rounded-full"></span>
+      </div>
+      
+      <div id="modalCompany" class="text-lg font-medium text-gray-600 dark:text-gray-300 mb-4 hidden"></div>
+      
+      <div class="mb-6">
+        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Description détaillée</h4>
+        <div id="modalDetailedDescription" class="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line"></div>
+      </div>
+      
+      <div class="mb-6">
+        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Technologies utilisées</h4>
+        <div id="modalTechnologies" class="flex flex-wrap gap-2"></div>
+      </div>
+      
+      <div id="modalImagesContainer" class="mb-6 hidden">
+        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Captures d'écran</h4>
+        <div id="modalImages" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Projets Techniques -->
 <div class="mb-16 bg-white dark:bg-gray-900 p-6 rounded-xl">
   <h3 class="text-3xl font-bold mb-12 text-center text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-    <span class="mr-3"></span>
+    <span class="mr-3">🚀</span>
     {t.projectsTitle}
   </h3>
   
@@ -108,7 +151,11 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
   </div>
 </div>
 
+
+
+
 <!-- Certifications et Réalisations -->
+<!--
 <div class="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
   <h3 class="text-2xl font-bold mb-8 text-center text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
     <span class="mr-3">🏆</span>
@@ -126,3 +173,91 @@ const t = portfolioTranslations[lang] || portfolioTranslations.fr;
     ))}
   </div>
 </div>
+-->
+
+
+<script define:vars={{ experiences: t.experiences }}>
+  // Données des expériences (injectées depuis Astro)
+  
+  // Gestion du modal
+  const modal = document.getElementById('experienceModal');
+  const closeModalBtn = document.getElementById('closeModal');
+  const experienceCards = document.querySelectorAll('.experience-card');
+  
+  // Ouvrir le modal
+  experienceCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      const index = parseInt(card.dataset.experienceIndex);
+      const exp = experiences[index];
+      
+      // Remplir le modal avec les données
+      document.getElementById('modalTitle').textContent = exp.title;
+      document.getElementById('modalIcon').textContent = exp.icon;
+      document.getElementById('modalPeriod').textContent = exp.period;
+      document.getElementById('modalDetailedDescription').textContent = exp.detailedDescription || exp.description;
+      
+      // Afficher la company si elle existe
+      const companyElement = document.getElementById('modalCompany');
+      if (exp.company) {
+        companyElement.textContent = exp.company;
+        companyElement.classList.remove('hidden');
+      } else {
+        companyElement.classList.add('hidden');
+      }
+      
+      // Afficher les technologies
+      const techContainer = document.getElementById('modalTechnologies');
+      techContainer.innerHTML = '';
+      exp.technologies.forEach(tech => {
+        const techSpan = document.createElement('span');
+        techSpan.className = 'px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-medium';
+        techSpan.textContent = tech;
+        techContainer.appendChild(techSpan);
+      });
+      
+      // Afficher les images si elles existent
+      const imagesContainer = document.getElementById('modalImagesContainer');
+      const imagesGrid = document.getElementById('modalImages');
+      
+      if (exp.images && exp.images.length > 0) {
+        imagesGrid.innerHTML = '';
+        exp.images.forEach(imgSrc => {
+          const imgElement = document.createElement('img');
+          imgElement.src = imgSrc;
+          imgElement.alt = `Capture d'écran de ${exp.title}`;
+          imgElement.className = 'w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300';
+          imagesGrid.appendChild(imgElement);
+        });
+        imagesContainer.classList.remove('hidden');
+      } else {
+        imagesContainer.classList.add('hidden');
+      }
+      
+      // Afficher le modal
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  
+  // Fermer le modal
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }
+  
+  closeModalBtn.addEventListener('click', closeModal);
+  
+  // Fermer le modal en cliquant à l'extérieur
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+  
+  // Fermer le modal avec la touche Échap
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+</script>

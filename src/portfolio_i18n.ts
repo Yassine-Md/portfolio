@@ -10,9 +10,17 @@ export const portfolioTranslations = {
       {
         title: "Application PWA de Gestion de Cantine",
         description: "Développement d'une application progressive pour la gestion de cantine scolaire avec fonctionnalités complètes.",
+        detailedDescription: `Création d'une application PWA permettant de gérer les repas, commandes et paiements pour les cantines scolaires.  
+Fonctionnalités clés : inscription des élèves, gestion des menus, notifications et statistiques en temps réel.`,
         technologies: ["NestJS", "Next.js", "TailwindCSS", "PostgreSQL"],
         icon: "🍽️",
         period: "Présent",
+        images: [
+	   "https://picsum.photos/800/600?random=1",
+	   "/images/portfolio/cantine/test2.jpg",
+	   "/images/portfolio/cantine/test1.jpg",
+	   
+	],
       },
       {
         title: "Module d'Organigramme Dynamique",
@@ -42,21 +50,18 @@ export const portfolioTranslations = {
         title: "Jeu de Cartes (Projet de Bachelor)",
         description: "Développement d'un jeu de cartes avec interface graphique complète comme projet de fin d'études.",
         technologies: ["Java", "Swing"],
-        icon: "🎴",
         year: "2021"
       },
       {
         title: "Jeu Takuzu avec SAT Solver",
         description: "Implémentation du jeu logique Takuzu avec résolution automatique utilisant un SAT Solver.",
         technologies: ["Python", "SAT Solver", "OOP"],
-        icon: "🧩",
         year: "2021"
       },
       {
         title: "Mini-Shell en C",
         description: "Réplique des fonctionnalités de base d'un shell Unix avec gestion des commandes et processus.",
         technologies: ["C", "Bash"],
-        icon: "💻",
         year: "2020"
       }
     ],
@@ -108,21 +113,18 @@ export const portfolioTranslations = {
         title: "Card Game (Bachelor Project)",
         description: "Development of a full GUI card game as a final-year project.",
         technologies: ["Java", "Swing"],
-        icon: "🎴",
         year: "2021"
       },
       {
         title: "Takuzu Game with SAT Solver",
         description: "Implementation of the logic game Takuzu with auto-solving via SAT Solver.",
         technologies: ["Python", "SAT Solver", "OOP"],
-        icon: "🧩",
         year: "2021"
       },
       {
         title: "Mini-Shell in C",
         description: "Basic Unix shell clone with command and process management.",
         technologies: ["C", "Bash"],
-        icon: "💻",
         year: "2020"
       }
     ],
