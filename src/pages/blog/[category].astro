@@ -1,11 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../components/Layout.astro';
+import { categories } from '../../config/categories.ts';
 
 export async function getStaticPaths() {
-  const categories = ['reseau', 'web', 'systeme', 'logiciel'];
   const paths = [];
-  
+
   for (const category of categories) {
     try {
       const articles = await getCollection(category);
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
       console.warn(`No articles found for category: ${category}`);
     }
   }
-  
+
   return paths;
 }
 

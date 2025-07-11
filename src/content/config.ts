@@ -1,6 +1,6 @@
 import { defineCollection, z } from 'astro:content';
+import { categories } from '../config/categories';
 
-// Définir le schéma pour tous vos articles
 const articleSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -9,31 +9,6 @@ const articleSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-// Définir vos collections
-const reseau = defineCollection({
-  type: 'content',
-  schema: articleSchema,
-});
-
-const web = defineCollection({
-  type: 'content',
-  schema: articleSchema,
-});
-
-const systeme = defineCollection({
-  type: 'content',
-  schema: articleSchema,
-});
-
-const logiciel = defineCollection({
-  type: 'content',
-  schema: articleSchema,
-});
-
-// Exporter toutes les collections
-export const collections = {
-  reseau,
-  web,
-  systeme,
-  logiciel,
-};
+export const collections = Object.fromEntries(
+  categories.map((name) => [name, defineCollection({ type: 'content', schema: articleSchema })])
+);
