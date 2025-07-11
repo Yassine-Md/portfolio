@@ -1,12 +1,12 @@
 export const headerTranslations = {
   fr: [
     { href: '/', label: 'Accueil' },
-    { href: '/about', label: 'À propos' },
+    { href: '/about', label: 'Notes' },
     { toggleLangLabel: 'En' }
   ],
   en: [
     { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
+    { href: '/about', label: 'Notes' },
     { toggleLangLabel: 'Fr' }
   ]
 };
