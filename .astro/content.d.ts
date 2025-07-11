@@ -162,13 +162,81 @@ declare module 'astro:content' {
 	};
 
 	type DataEntryMap = {
-		"logiciel": Record<string, {
+		"Materiel": Record<string, {
+  id: string;
+  body?: string;
+  collection: "Materiel";
+  data: any;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"bdd": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "bdd";
+  data: InferEntrySchema<"bdd">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"cloud_devops": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "cloud_devops";
+  data: InferEntrySchema<"cloud_devops">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"embarque": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "embarque";
+  data: InferEntrySchema<"embarque">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"logiciel": Record<string, {
   id: string;
   render(): Render[".md"];
   slug: string;
   body: string;
   collection: "logiciel";
   data: InferEntrySchema<"logiciel">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"management": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "management";
+  data: InferEntrySchema<"management">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"materiel": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "materiel";
+  data: InferEntrySchema<"materiel">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"programmation": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "programmation";
+  data: InferEntrySchema<"programmation">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
@@ -182,6 +250,16 @@ declare module 'astro:content' {
   rendered?: RenderedContent;
   filePath?: string;
 }>;
+"securite": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "securite";
+  data: InferEntrySchema<"securite">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
 "systeme": Record<string, {
   id: string;
   render(): Render[".md"];
@@ -189,6 +267,16 @@ declare module 'astro:content' {
   body: string;
   collection: "systeme";
   data: InferEntrySchema<"systeme">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"virtualisation": Record<string, {
+  id: string;
+  render(): Render[".md"];
+  slug: string;
+  body: string;
+  collection: "virtualisation";
+  data: InferEntrySchema<"virtualisation">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;
