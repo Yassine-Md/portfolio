@@ -33,7 +33,7 @@ export const translations = {
     btnContact: "Contact me",
     aboutHeading: "Who am I?",
     aboutParagraphs: [
-      "Hi! I'm currently pursuing a master's degree at ENSIMAG in Grenoble, specializing in Networks and Cybersecurity while working as an apprentice. I'm passionate about cybersecurity — a fascinating yet complex field that requires more than just knowing how to \"hack stuff.\"",
+      "Hi! I'm currently pursuing a master's degree at ENSIMAG in Grenoble, specializing in Networks and Cybersecurity while working as an apprentice. I'm passionate about cybersecurity a fascinating yet complex field that requires more than just knowing how to \"hack stuff.\"",
       "To truly excel in cybersecurity, you need a comprehensive vision: strong in systems, sharp in networks, agile in development, and naturally curious. It's a world where every detail matters, where you have to dismantle problems, dig beneath the surface, and think outside the box.",
       "What I love is precisely that: going further where others stop. Exploring the small details that escape the majority, understanding protocol internals, analyzing strange network behavior, or dissecting vulnerabilities with precision. In short, everything that fuels a rich and sharp IT culture."
     ],
