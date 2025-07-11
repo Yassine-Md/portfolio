@@ -1,0 +1,20 @@
+pour l'insertion des images : 
+lire : https://chatgpt.com/c/686e618b-33d8-8011-b590-bf093caab764
+
+
+fix: corrige le bouton de changement de langue en production
+
+- Remplace les boutons JavaScript par des liens statiques
+- Calcule les URLs de langue alternative côté serveur
+- Élimine les problèmes de suffixes /en /fr dupliqués
+- Assure la cohérence entre développement et production
+https://claude.ai/chat/f5b2e58f-f900-4e3c-8e95-772b01a89101
+
+
+
+
+
+
+explication de l'architecture du site et des differents fichier 
+=> je veux ecrire un readme qui explique chaque fichier / repertoire :
+https://chatgpt.com/c/6870caaf-c0cc-8011-8947-a879ca8d9bbf
