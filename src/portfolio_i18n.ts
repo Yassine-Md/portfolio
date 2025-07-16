@@ -13,7 +13,6 @@ export const portfolioTranslations = {
         detailedDescription: `Création d'une application PWA permettant de gérer les repas, commandes et paiements pour les cantines scolaires.  
 Fonctionnalités clés : inscription des élèves, gestion des menus, notifications et statistiques en temps réel.`,
         technologies: ["NestJS", "Next.js", "TailwindCSS", "PostgreSQL"],
-        icon: "🍽️",
         period: "Présent",
         images: [
 	   "https://picsum.photos/800/600?random=1",
@@ -26,21 +25,18 @@ Fonctionnalités clés : inscription des élèves, gestion des menus, notificati
         title: "Module d'Organigramme Dynamique",
         description: "Plugin d'organigramme interactif intégré à un ERP existant avec visualisation hiérarchique.",
         technologies: ["Flask", "SQLite", "Angular 18"],
-        icon: "📊",
         period: "2025"
       },
       {
         title: "Solution SIEM de Sécurité",
         description: "Implémentation d'une solution de détection et réponse aux menaces avec analyse centralisée des logs.",
         technologies: ["Graylog", "Snort", "Syslog", "The Hive", "Docker"],
-        icon: "🛡️",
         period: "2024",
       },
       {
         title: "Développeur WordPress",
         description: "Création d'un site vitrine WordPress responsive pour présenter des produits/services avec design moderne et adaptatif.",
         technologies: ["WordPress", "CSS", "Responsive Design", "PHP"],
-        icon: "🌐",
         company: "Projet Freelance",
         period: "2020"
       }

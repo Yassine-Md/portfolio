@@ -7,13 +7,14 @@ export async function getStaticPaths() {
   const paths = [];
 
   for (const category of categories) {
+    // On essaie de récupérer les articles mais on ne bloque pas si vide ou erreur
     try {
-      const articles = await getCollection(category);
-      if (articles.length > 0) {
-        paths.push({ params: { category } });
-      }
+      await getCollection(category);
+      // On pousse toujours la catégorie même si pas d'articles
+      paths.push({ params: { category } });
     } catch (error) {
-      console.warn(`No articles found for category: ${category}`);
+      // En cas d'erreur, on peut décider de quand même créer la page ou non
+      paths.push({ params: { category } });
     }
   }
 
