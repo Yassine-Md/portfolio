@@ -1,14 +1,20 @@
 ---
-title: "Comprendre LVM : Logical Volume Manager sous Linux"
-description: "Une introduction complète à LVM, ses avantages, limitations et cas d’usage"
-pubDate: 2025-06-27
-author: "Ton Nom"
-tags: ["LVM", "Linux", "RAID", "Storage"]
+title: 'Comprendre LVM : Logical Volume Manager sous Linux'
+description: 'Une introduction complète à LVM, ses avantages, limitations et cas d’usage'
+pubDate: 2025-06-27T00:00:00.000Z
+author: Ton Nom
+tags:
+  - LVM
+  - Linux
+  - RAID
+  - Storage
 ---
 
 # Comprendre LVM : Logical Volume Manager sous Linux
 
 ## Peut-on partager un point de montage sur plusieurs disques à la fois ?
+
+![LVM.png](/reseau/LVM/LVM.png)
 
 Est-ce qu’un point de montage, un répertoire, peut être partagé sur plus d’un disque à la fois (plusieurs partitions) ?
 

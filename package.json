@@ -1,1 +1,23 @@
-{"name":"ping-to-learn","version":"1.0.0","scripts":{"dev":"astro dev","build":"astro build","preview":"astro preview"},"dependencies":{"@astrojs/mdx":"^4.3.0","astro":"^5.6.1"},"devDependencies":{"@astrojs/tailwind":"^6.0.2","@tailwindcss/typography":"^0.5.16","autoprefixer":"^10.4.21","postcss":"^8.5.6","tailwindcss":"^3.4.17"}}
+{
+  "name": "ping-to-learn",
+  "version": "1.0.0",
+  "type": "module", 
+  "scripts": {
+    "fix-images": "node scripts/fix-md-images.js",
+    "dev": "npm run fix-images && astro dev",
+    "build": "npm run fix-images && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "astro": "^5.6.1",
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "@astrojs/tailwind": "^6.0.2",
+    "@tailwindcss/typography": "^0.5.16",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17"
+  }
+}
