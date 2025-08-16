@@ -1,14 +1,20 @@
 ---
-title: 'Comprendre LVM : Logical Volume Manager sous Linux'
-description: 'Une introduction complète à LVM, ses avantages, limitations et cas d’usage'
+title: "MPLS : Tout comprendre sur le routage par labels – Fonctionnement, avantages et cas d'usage"
+description: "MPLS (Multiprotocol Label Switching) révolutionne le routage en remplaçant les adresses IP par des labels pour un transit ultra-rapide des données. Cet article détaille : *) Les Fondamentaux  *) Les Protocoles associés  *) Les Optimisations etc ."
 pubDate: 2025-06-27T00:00:00.000Z
-author: Ton Nom
+author: Madhbouh Yassine
 tags:
-  - LVM
-  - Linux
-  - RAID
-  - Storage
+  - MPLS
+  - QoS
+  - L3VPN
+  - Traffic_Engineering
+  - RSVP-TE
+  - LDP
+  - BGP
+  - VRF
+  - VPN-MPLS
 ---
+
 
 ### Introduction
 
@@ -770,7 +776,9 @@ Cela signifie :
 | **Label extérieur**          | Utilisé par les routeurs P pour acheminer le paquet jusqu’au PE de sortie via le backbone MPLS.                                                                            |
 | **PE de sortie**             | Lit le VPN Label et délivre le paquet dans la bonne VRF correspondant au client.                                                                                           |
 
-[test](http://localhost:4321/blog/reseau/vfr/vrf)
+> [!NOTE]
+> **RD et RT** : sont détaillés dans l’article **[VRF](https://ym-port-folio.netlify.app/blog/reseau/mpls/mpls)** !
+> 
 
 ---
 
@@ -813,6 +821,88 @@ Quand PE1 envoie un paquet vers 10.2.2.2 :
 
 C’est ce label qui **indique au PE dans quelle VRF remettre le paquet**.  
 Sans ce label, PE2 ne pourrait pas savoir **quel client** est concerné (surtout si plusieurs clients utilisent les **mêmes plages IP** !).
+
+---
+
+## MPLS Encapsulation : le header MPLS
+
+Un **header MPLS** (ou label MPLS) est un **en-tête de 4 octets (32 bits)** inséré entre la trame Ethernet et la couche réseau (IP).  
+Il contient :
+
+|Champs|Taille (bits)|Description|
+|---|---|---|
+|**Label**|20|L’étiquette MPLS utilisée pour le forwarding|
+|**TC (Traffic Class)**|3|Priorité QoS (anciennement EXP)|
+|**S (Bottom of Stack)**|1|Indique si c’est le dernier label de la pile|
+|**TTL (Time to Live)**|8|Durée de vie du paquet (comme en IP)|
+
+### Exemple d’empilement de labels MPLS :
+
+Un paquet peut avoir plusieurs headers MPLS empilés (stacked labels), par exemple :
+
+```
+| Label Transport | Label VPN | Paquet IP |
+```
+
+
+![[struct_mpls_header_encapsulation.png]]
+
+
+---
+
+## MPLS est activé **par interface** : Explication complète
+
+
+Cela signifie que :
+
+> **Même si le routeur supporte MPLS globalement**, il **n’active réellement le traitement MPLS que sur les interfaces où on l’ordonne explicitement**.
+
+Autrement dit :
+
+- **MPLS ne fonctionne pas "automatiquement" sur toutes les interfaces**.
+    
+- Tu dois **manuellement activer MPLS** sur **chaque interface** où tu veux que les paquets soient étiquetés ou traités via MPLS.
+
+### Deux niveaux d’activation MPLS
+
+|Niveau de configuration|Commande|Rôle principal|
+|---|---|---|
+|Global (plan de contrôle)|`mpls ip`|Active le **support MPLS** sur le routeur (processus, LDP, gestion de labels).|
+|Interface (plan de données)|`mpls ip` sur interface|Autorise **le traitement MPLS** (insertion/lecture de labels) sur cette interface.|
+
+### Que se passe-t-il si on oublie l’activation par interface ?
+
+Même si :
+
+- Tu actives `mpls ip` en global,
+    
+- Tu configures LDP et autres protocoles MPLS,
+    
+
+**Aucun paquet ne sera étiqueté ou traité en MPLS tant que les interfaces n’ont pas `mpls ip`.**
+
+De plus :
+
+- **LDP ne formera pas de session** avec les voisins via ces interfaces.
+    
+- Aucune **échange de labels** ne sera possible.
+
+
+##### RESSOURCES :
+- **Cisco IOS XE MPLS LDP Autoconfig**  
+    _"LDP must first be enabled globally by means of the global **mpls ip** command."_  
+    [https://www.cisco.com/c/en/us/td/docs/ios/ios_xe/mpls/configuration/guide/convert/mp_ldp_book_xe/mp_ldp_autoconfig_xe.html](https://www.cisco.com/c/en/us/td/docs/ios/ios_xe/mpls/configuration/guide/convert/mp_ldp_book_xe/mp_ldp_autoconfig_xe.html)
+    
+- **Cisco IOS MPLS LDP Configuration Guide**  
+    _"If the Label Distribution Protocol (LDP) is disabled globally, the mpls ldp autoconfig command fails and generates a console message explaining that LDP must first be enabled globally by using the mpls ip global configuration command."_  
+    [https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/mp_ldp/configuration/xe-3s/asr903/mp-ldp-xe-3s-asr903-book/mp-ldp-autoconfig.html](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/mp_ldp/configuration/xe-3s/asr903/mp-ldp-xe-3s-asr903-book/mp-ldp-autoconfig.html)
+    
+- **Cisco Community Discussion**  
+    [https://community.cisco.com/t5/switching/quot-mpls-ip-quot-global-vs-interface-level-command/td-p/2450365](https://community.cisco.com/t5/switching/quot-mpls-ip-quot-global-vs-interface-level-command/td-p/2450365)
+    
+- **Cisco MPLS Command Reference**  
+    _"If LDP is disabled globally, the mpls ldp autoconfig command fails. LDP must be enabled globally by means of the global mpls ip command first."_  
+    [https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/mpls/command/mp-cr-book/mp-m2.html](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/mpls/command/mp-cr-book/mp-m2.html)
 
 ---
 ## SCÉNARIO COMPLET
@@ -886,6 +976,7 @@ PE1 encapsule le paquet comme suit :
 |Label 1 (outer)|Transport MPLS (ex: LDP vers PE2)|
 |Label 2 (inner)|Label VPN vers VRF_A sur PE2|
 |Payload|Paquet IP ICMP de C1 → C2|
+
 Les **routeurs P (P1, P2)** voient **uniquement les labels**, pas les adresses IP source/destination du paquet original.
 
 ### 5. Commutation MPLS dans le cœur (routeurs P)
@@ -916,12 +1007,13 @@ Les **routeurs P (P1, P2)** voient **uniquement les labels**, pas les adresses I
 
 ---
 
+### Ressources :
 
-ressources : 
-https://www.cloudflare.com/fr-fr/learning/network-layer/what-is-mpls/
-https://www.frameip.com/mpls/
-https://www.youtube.com/watch?v=vBi4T5dl_YM (voir tous ca serie de video sur mpls tres bien expliquer)
-
+- [What is MPLS? – Cloudflare](https://www.cloudflare.com/fr-fr/learning/network-layer/what-is-mpls/)
+    
+- [Introduction à MPLS – FrameIP](https://www.frameip.com/mpls/)
+    
+- [Série de vidéos très bien expliquées sur MPLS – YouTube](https://www.youtube.com/watch?v=vBi4T5dl_YM)
 
 
 ---

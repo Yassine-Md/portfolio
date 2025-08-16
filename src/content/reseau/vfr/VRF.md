@@ -1,13 +1,19 @@
 ---
-title: 'Comprendre LVM : Logical Volume Manager sous Linux'
-description: 'Une introduction complète à LVM, ses avantages, limitations et cas d’usage'
+title: "VRF & VRF-Lite : Maîtriser la Segmentation Réseau Avancée (MPLS, Isolation, Route Target)"
+description: |-
+  La technologie VRF (Virtual Routing and Forwarding) permet de créer des réseaux virtuels isolés sur un même équipement physique, essentielle pour les fournisseurs de services et les entreprises multi-sites.
+  Cet article explique :    
+  *)Fonctionnement  *)VRF-Lite vs VRF+MPLS   *)MPLS VPN   *)Sécurité   *) Bonnes pratiques  etc.
 pubDate: 2025-06-27T00:00:00.000Z
-author: Ton Nom
+author: Madhbouh Yassine
 tags:
-  - LVM
-  - Linux
-  - RAID
-  - Storage
+  - VRF
+  - VRFLite
+  - MPLS
+  - RouteTarget
+  - SegmentationRéseau
+  - VPN-MPLS
+  - RouteDistinguisher
 ---
 
 # Comprendre le Concept de VRF et VRF-Lite
