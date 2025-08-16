@@ -1,6 +1,12 @@
 ---
-title: "MPLS : Tout comprendre sur le routage par labels – Fonctionnement, avantages et cas d'usage"
-description: "MPLS (Multiprotocol Label Switching) révolutionne le routage en remplaçant les adresses IP par des labels pour un transit ultra-rapide des données. Cet article détaille : *) Les Fondamentaux  *) Les Protocoles associés  *) Les Optimisations etc ."
+title: >-
+  MPLS : Tout comprendre sur le routage par labels – Fonctionnement, avantages
+  et cas d'usage
+description: >-
+  MPLS (Multiprotocol Label Switching) révolutionne le routage en remplaçant les
+  adresses IP par des labels pour un transit ultra-rapide des données. Cet
+  article détaille : *) Les Fondamentaux  *) Les Protocoles associés  *) Les
+  Optimisations etc .
 pubDate: 2025-06-27T00:00:00.000Z
 author: Madhbouh Yassine
 tags:
@@ -845,7 +851,7 @@ Un paquet peut avoir plusieurs headers MPLS empilés (stacked labels), par exemp
 ```
 
 
-![[struct_mpls_header_encapsulation.png]]
+![struct_mpls_header_encapsulation.png](/reseau/MPLS/struct_mpls_header_encapsulation.png)
 
 
 ---

@@ -1,6 +1,9 @@
 ---
-title: "Linux File System: Structure, Implementation, Optimisation & Evolution"
-description: Découvrez l'architecture des systèmes de fichiers Linux leur évolution et leurs mécanismes clés et les techniques d'optimisation pour performances accrues
+title: 'Linux File System: Structure, Implementation, Optimisation & Evolution'
+description: >-
+  Découvrez l'architecture des systèmes de fichiers Linux leur évolution et
+  leurs mécanismes clés et les techniques d'optimisation pour performances
+  accrues
 pubDate: 2025-06-27T00:00:00.000Z
 author: Madhbouh Yassine
 tags:
@@ -101,7 +104,7 @@ Il constitue la "colonne vertébrale" du système de fichiers, jouant un rôle c
 
 En plus des informations générales sur la partition, le **superblock** contient également une **liste accélérée d'inodes libres** (free inode list), conçue pour améliorer les performances lors de la création de fichiers. Plutôt que de parcourir l'intégralité du **bitmap des inodes** à chaque demande, le système consulte d’abord cette liste, qui agit comme une **mémoire tampon** des inodes disponibles. Lorsqu’un inode est requis, un élément est extrait de cette liste si elle n’est pas vide, ce qui évite une recherche disque coûteuse. Cette liste est mise à jour **de manière paresseuse (lazy update)** : elle est régénérée ou complétée en arrière-plan, lorsque le système est peu sollicité ou lors de cycles de maintenance internes. Cette approche permet une allocation plus rapide tout en limitant l’impact sur les ressources pendant les périodes d’activité intensive.
 
-![[sb_inode_free_list_optimisation.png]]
+![sb_inode_free_list_optimisation.png](/systeme/File System/sb_inode_free_list_optimisation.png)
 
 ### 5.2 Les direntries (entrées de répertoire)
 
@@ -112,7 +115,7 @@ Les direntries (ou entrées de répertoire) représentent un mécanisme simple m
 
 Cette structure permet de relier chaque entrée de répertoire aux métadonnées correspondantes, ce qui rend la navigation et la gestion des répertoires intuitive et rapide.
 
-![[repo_inode_ex.png]]
+![repo_inode_ex.png](/systeme/File System/repo_inode_ex.png)
 => **Représentation simple (juste à titre d’illustration)**
 ### 5.3 Organisation des répertoires (Directory Entries / Direntries)
 
@@ -148,7 +151,7 @@ Chaque entrée commence à l’endroit désigné, et `rec_len` permet de **passe
 
 Lorsqu’un fichier est supprimé d’un répertoire, **l'entrée n’est pas immédiatement effacée**. À la place, son champ `inode` est **mis à zéro** (`inode = 0`), indiquant que cette entrée est libre et peut être réutilisée. Cela permet une gestion plus efficace de l’espace sans réécriture coûteuse des blocs de répertoire.
 
-![[ex_inode_data_block.png]]
+![ex_inode_data_block.png](/systeme/File System/ex_inode_data_block.png)
 #### Accès et performance
 
 - Le **champ `rec_len`** permet une navigation rapide d’une entrée à l’autre, sans avoir besoin de structures de type liste chaînée.
@@ -247,7 +250,7 @@ Ce pointeur pointe vers un bloc contenant des pointeurs vers d'autres blocs d'in
 
 Utilisé pour les très grands fichiers, ce pointeur ajoute un troisième niveau de redirection. Il pointe vers un bloc contenant des pointeurs vers des blocs intermédiaires, eux-mêmes pointant vers des blocs d'indirection, qui enfin pointent vers les blocs de données. Cela donne une capacité théorique d'adressage de 1024³ = **1 073 741 824 blocs de données**, soit environ 4 To si chaque bloc fait 4 Ko.
 
-![[inode_data_block.png]]
+![inode_data_block.png](/systeme/File System/inode_data_block.png)
 
 ### 6.3 Compromis performance-capacité
 
@@ -262,7 +265,7 @@ Les inodes sont alloués au moment de la création du fichier, et leur nombre es
 
 Au sein du système de fichiers Linux, plusieurs algorithmes bas-niveau sont indispensables pour la gestion fine des inodes et des blocs de données. L’algorithme **namei** est responsable de la résolution des chemins d’accès : il parcourt récursivement les répertoires pour traduire un chemin en inode, permettant ainsi d’identifier précisément le fichier ou répertoire ciblé. Une fois l’inode localisé, **iget** est utilisé pour charger cet inode en mémoire, exploitant un cache d’inodes pour optimiser les accès ultérieurs. Lorsque l’inode n’est plus utilisé, **iput** intervient pour libérer la structure en mémoire, en gérant la décrémentation du compteur de références et en déclenchant éventuellement la libération de l’inode si celle-ci est nécessaire. Pour la gestion des blocs physiques sur disque, les algorithmes **alloc** et **free** permettent respectivement d’allouer et de libérer les blocs, assurant une gestion efficace de l’espace disponible. De même, l’allocation et la libération des inodes sont assurées par **ialloc** et **ifree**, qui manipulent la création et la suppression des inodes dans les tables du système de fichiers. Ces algorithmes, bien que très bas-niveau, sont essentiels pour garantir la cohérence, la performance et la robustesse de la gestion des fichiers sous Linux.
 
-![[low_level_fs_algo.png]]
+![low_level_fs_algo.png](/systeme/File System/low_level_fs_algo.png)
 ## 7. Techniques d'Optimisation
 
 ### 7.1 Optimisation de l'allocation des inodes

@@ -1,6 +1,11 @@
 ---
-title: "VFS Linux : Le Système de Fichiers Virtuel : Architecture, Abstraction et Sécurité"
-description: Le Virtual File System (VFS) est une couche d'abstraction centrale du noyau Linux, permettant une gestion unifiée des systèmes de fichiers, qu'ils soient locaux (EXT4), réseau (NFS) ou virtuels (tmpfs)
+title: >-
+  VFS Linux : Le Système de Fichiers Virtuel : Architecture, Abstraction et
+  Sécurité
+description: >-
+  Le Virtual File System (VFS) est une couche d'abstraction centrale du noyau
+  Linux, permettant une gestion unifiée des systèmes de fichiers, qu'ils soient
+  locaux (EXT4), réseau (NFS) ou virtuels (tmpfs)
 pubDate: 2025-06-27T00:00:00.000Z
 author: Madhbouh Yassine
 tags:
@@ -60,7 +65,7 @@ Lorsqu’un programme appelle `read(fd, buf, size)` :
 > Cette fonction `read` est implémentée par le système de fichiers (ex. EXT4, NFS, tmpfs...).
 
 
-![[1vfs_img1.png]]
+![1vfs_img1.png](/systeme/VFS/1vfs_img1.png)
 
 ---
 

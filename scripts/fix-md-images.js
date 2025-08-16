@@ -44,9 +44,9 @@ walk(CONTENT_DIR, (filepath) => {
     // Copier l’image si elle existe
     if (fs.existsSync(srcImagePath)) {
       fs.copyFileSync(srcImagePath, destImagePath);
-      console.log(`✅ Image copiée: ${publicPath}`);
+      console.log(`Image copiée: ${publicPath}`);
     } else {
-      console.warn(`❌ Image introuvable: ${srcImagePath}`);
+      console.warn(`Image introuvable: ${srcImagePath}`);
     }
 
     // Remplacer ![[LVM.png]] par ![LVM](/reseau/LVM/LVM.png)
@@ -55,5 +55,5 @@ walk(CONTENT_DIR, (filepath) => {
 
   const newRawContent = matter.stringify(updatedContent, data);
   fs.writeFileSync(filepath, newRawContent, 'utf-8');
-  console.log(`📄 Fichier mis à jour: ${filepath}`);
+  console.log(`Fichier mis à jour: ${filepath}`);
 });

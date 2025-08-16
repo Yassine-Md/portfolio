@@ -1,3 +1,19 @@
+---
+title: "MISP : Plateforme Collaborative de Partage de Threat Intelligence"
+description: Découvrez MISP, la solution open source de référence pour le partage structuré d'indicateurs de compromission (IoC). Cet article explore ses fonctionnalités clés, son architecture, et son rôle crucial dans la détection proactive des cybermenaces.
+pubDate: 2025-06-27T00:00:00.000Z
+author: Madhbouh Yassine
+tags:
+  - MISP
+  - STIX/TAXII
+  - SOC
+  - MITRE-ATTACK
+  - IoC
+  - Threat-Intelligence
+  - TLP
+  - CSIRT
+---
+
 # **MISP : Plateforme Collaborative de Partage de Renseignements sur les Menaces**
 
 ## **Résumé**
